@@ -6,7 +6,7 @@ var config = {
   stop: { value: 60, type: 'multiplier', label: 'base payout' },
   loss: { value: 'increase', type: 'radio', label: 'On loss',
         options: { base: { type: 'noop', label: 'return to base payout'},
-		increase: { value: 1, type: 'multiplier', label: 'increase payout' },
+		increase: { value: 0.6, type: 'multiplier', label: 'increase payout' },
 		}
 		},
   win: { value:'base', type:'radio', label:'On win',
