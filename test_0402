@@ -1,12 +1,10 @@
 var config = {
   base: { value: 100000, type: 'balance', label: 'base bet' },
   basePayout: { value: 1.1, type: 'multiplier', label: 'base payout' },
-  goal: { value: 110000, type: 'balance', label: 'base goal' },
-  goalPayout: { value: 100000, type: 'balance', label: 'goal increase' },
   stop: { value: 60, type: 'multiplier', label: 'base payout' },
   loss: { value: 'increase', type: 'radio', label: 'On loss',
         options: { base: { type: 'noop', label: 'return to base payout'},
-		increase: { value: 0.6, type: 'multiplier', label: 'increase payout' },
+		increase: { value: 0.8, type: 'multiplier', label: 'increase payout' },
 		}
 		},
   win: { value:'base', type:'radio', label:'On win',
@@ -20,7 +18,7 @@ log('Script is running..');
 
 var currentPayout = config.basePayout.value;
 var currentBase = config.base.value;
-var currentGoal = config.goal.value;
+var currentLoss = 0;
 
 engine.bet(currentBase,currentPayout);
 
@@ -44,7 +42,7 @@ function onGameEnded(info){
 		if(config.win.value ==='base'){
 			currentPayout = config.basePayout.value;
 			currentBase = config.base.value;
-			currentGoal = config.goal.value;
+			currentLoss = 0;
 			log('Win base:',currentBase/100,' payout:',currentPayout);
 		}else {
 			console.assert(config.win.value === 'increase');
@@ -57,23 +55,22 @@ function onGameEnded(info){
 			console.assert(config.loss.value === 'increase');
 			currentPayout += config.loss.options.increase.value;
 			currentPayout = Math.round(currentPayout*10)/10;
-			currentGoal += config.goalPayout.value;
+			currentLoss += currentBase;
 			cal_bet();
-			log('loss base:',round_bet(currentBase),' payout:',currentPayout, 'goal:',currentGoal/100);
+			log('loss base:',round_bet(currentBase)/100,' payout:',currentPayout, 'Loss:-',currentLoss/100);
 		}
 	}
 	
 	if( currentPayout > config.stop.value){
 		currentPayout = config.basePayout.value;
 		currentBase = config.base.value;
-		currentGoal = config.goal.value;
-		log('stop base:',currentBase/100,' payout:',currentPayout, 'goal:',currentGoal/100);
+		currentLoss = 0;
+		log('stop base:',currentBase/100,' payout:',currentPayout, 'Loss-:',currentLoss/100));
 	}
 }
 
 function cal_bet(){
-	currentBase = Math.round(currentGoal/currentPayout);
-	
+	currentBase = Math.round((currentLoss+100)/(currentPayout-1));
 }
 
 function round_bet(bet){
