@@ -65,7 +65,7 @@ function onGameEnded(info){
 		currentPayout = config.basePayout.value;
 		currentBase = config.base.value;
 		currentLoss = 0;
-		log('stop base:',currentBase/100,' payout:',currentPayout, 'Loss-:',currentLoss/100));
+		log('stop base:',currentBase/100,' payout:',currentPayout, 'Loss-:',currentLoss/100);
 	}
 }
 
