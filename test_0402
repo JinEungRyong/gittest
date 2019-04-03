@@ -1,12 +1,12 @@
 var config = {
-  base: { value: 100000, type: 'balance', label: 'base bet' },
+  base: { value: 1000, type: 'balance', label: 'base bet' },
   basePayout: { value: 1.1, type: 'multiplier', label: 'base payout' },
-  goal: { value: 110000, type: 'balance', label: 'base goal' },
-  goalPayout: { value: 100000, type: 'balance', label: 'goal increase' },
+  goal: { value: 1100, type: 'balance', label: 'base goal' },
+  goalPayout: { value: 1000, type: 'balance', label: 'goal increase' },
   stop: { value: 60, type: 'multiplier', label: 'base payout' },
   loss: { value: 'increase', type: 'radio', label: 'On loss',
         options: { base: { type: 'noop', label: 'return to base payout'},
-		increase: { value: 0.6, type: 'multiplier', label: 'increase payout' },
+		increase: { value: 1, type: 'multiplier', label: 'increase payout' },
 		}
 		},
   win: { value:'base', type:'radio', label:'On win',
@@ -22,11 +22,15 @@ var currentPayout = config.basePayout.value;
 var currentBase = config.base.value;
 var currentGoal = config.goal.value;
 
+engine.bet(currentBase,currentPayout);
+
 engine.on('GAME_STARTING',onGameStarted);
 engine.on('GAME_ENDED',onGameEnded);
 
 function onGameStarted() {
+	log('betting');
 	engine.bet(round_bet(currentBase),currentPayout);
+	log('bet');
 }
 
 function onGameEnded(info){
@@ -55,7 +59,7 @@ function onGameEnded(info){
 			currentPayout = currentPayout.toFixed(1);
 			currentGoal += config.goalPayout.value;
 			cal_bet();
-			log('loss base:',currentBase/100,' payout:',currentPayout, 'goal:',currentGoal/100);
+			log('loss base:',round_bet(currentBase)' payout:',currentPayout, 'goal:',currentGoal/100);
 		}
 	}
 	
