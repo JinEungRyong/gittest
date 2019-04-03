@@ -1,12 +1,12 @@
 var config = {
-  base: { value: 1000, type: 'balance', label: 'base bet' },
+  base: { value: 100000, type: 'balance', label: 'base bet' },
   basePayout: { value: 1.1, type: 'multiplier', label: 'base payout' },
-  goal: { value: 1100, type: 'balance', label: 'base goal' },
-  goalPayout: { value: 1000, type: 'balance', label: 'goal increase' },
+  goal: { value: 110000, type: 'balance', label: 'base goal' },
+  goalPayout: { value: 100000, type: 'balance', label: 'goal increase' },
   stop: { value: 60, type: 'multiplier', label: 'base payout' },
   loss: { value: 'increase', type: 'radio', label: 'On loss',
         options: { base: { type: 'noop', label: 'return to base payout'},
-		increase: { value: 1, type: 'multiplier', label: 'increase payout' },
+		increase: { value: 0.6, type: 'multiplier', label: 'increase payout' },
 		}
 		},
   win: { value:'base', type:'radio', label:'On win',
@@ -56,10 +56,10 @@ function onGameEnded(info){
 		}else {
 			console.assert(config.loss.value === 'increase');
 			currentPayout += config.loss.options.increase.value;
-			currentPayout = currentPayout.toFixed(1);
+			currentPayout = Math.round(currentPayout*10)/10;
 			currentGoal += config.goalPayout.value;
 			cal_bet();
-			log('loss base:',round_bet(currentBase)' payout:',currentPayout, 'goal:',currentGoal/100);
+			log('loss base:',round_bet(currentBase),' payout:',currentPayout, 'goal:',currentGoal/100);
 		}
 	}
 	
