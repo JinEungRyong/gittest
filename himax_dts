@@ -1,0 +1,26 @@
+/dts-v1/;
+/plugin/;
+
+/ {
+	compatible = "brcm,bcm2708";
+
+	fragment@0 {
+		target = <&i2c1>;
+		__overlay__ {
+			status = "okay";
+			himax_ts@48 {
+				compatible = "himax,hxcommon";
+				reg = <0x48>;
+				interrupt-parent = <&gpio>;
+				interrupts = <17 0x2>;
+
+				himax,panel-coords = <0 480 0 800>;
+				himax,display-coords = <0 480 0 800>;
+				himax,irq-gpio = <&gpio 17 0x00>;
+				himax,rst-gpio = <&gpio 18 0x00>;
+				report_type = <1>;
+			};
+		};
+	};
+
+};
